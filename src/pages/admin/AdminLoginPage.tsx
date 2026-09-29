@@ -6,6 +6,20 @@ import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import logo from '../../assets/gcms-logo.png';
 
+function loginErrorMessage(raw: string): string {
+  const msg = raw.toLowerCase();
+  if (msg.includes('invalid login credentials')) {
+    return "That email and password don't match any account. Double-check both for typos, or confirm this user exists under Authentication \u2192 Users in Supabase.";
+  }
+  if (msg.includes('email not confirmed')) {
+    return 'This account exists but its email is not confirmed. In Supabase, open Authentication \u2192 Users, open this user, and confirm the email (or delete and recreate it with "Auto Confirm User" checked).';
+  }
+  if (msg.includes('failed to fetch') || msg.includes('networkerror')) {
+    return "Couldn't reach Supabase. Check that VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file match your project, and restart the dev server after editing .env.";
+  }
+  return raw || 'Something went wrong signing in. Please try again.';
+}
+
 export default function AdminLoginPage() {
   const { session, signIn } = useAuth();
   const navigate = useNavigate();
@@ -27,7 +41,7 @@ export default function AdminLoginPage() {
     const { error: signInError } = await signIn(email, password);
     setLoading(false);
     if (signInError) {
-      setError('Incorrect email or password. Please try again.');
+      setError(loginErrorMessage(signInError));
       return;
     }
     navigate('/admin', { replace: true });

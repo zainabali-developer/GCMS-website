@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { GraduationCap, ClipboardCheck, Compass } from 'lucide-react';
 import { useSiteSettings } from '../../hooks/useSiteSettings';
+import campusPhoto from '../../assets/campus-photo.jpg';
 
 export default function Hero() {
   const { settings } = useSiteSettings();
@@ -43,7 +44,7 @@ export default function Hero() {
         <div className="relative mx-auto aspect-[4/3] w-full max-w-xl lg:max-w-none">
           <div className="absolute inset-0 overflow-hidden rounded-2xl border border-emerald-900/10 shadow-lg shadow-emerald-950/10">
             <img
-              src="/college-campus.svg"
+              src={campusPhoto}
               alt="Government College of Management Sciences Abbottabad campus"
               className="h-full w-full object-cover"
             />
